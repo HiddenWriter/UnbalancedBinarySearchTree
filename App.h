@@ -12,12 +12,13 @@ public:
 	void Run();
 	void Add();
 	void Delete();
-
+	
 	void Print() noexcept;
 	void Height() noexcept;
 	void ShowSize() noexcept;
 private:
 	TYPE& GetType(void) noexcept;
+	void Destroy();
 private:
 	void* vt;
 	int mCommand;

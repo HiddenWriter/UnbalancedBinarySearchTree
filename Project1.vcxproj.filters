@@ -33,6 +33,9 @@
     <ClCompile Include="Treap.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ScapeGoat.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BaseTree.h">
@@ -48,6 +51,9 @@
       <Filter>Resource Files</Filter>
     </ClInclude>
     <ClInclude Include="Treap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ScapeGoat.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

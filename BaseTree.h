@@ -57,7 +57,7 @@ public:
 	bool SearchItem(T _item);
 	void Print() noexcept;
 	void PrintTreeSize1() noexcept;
-	void PrintTreeSize2() noexcept;
+	int GetTreeSize() noexcept;
 	void PrintTreeHeight() noexcept;
 
 protected:
@@ -74,6 +74,8 @@ protected:
 	int PrintSizeOfNodeNonRecursively() noexcept;
 	int PrintHeightOfNodeRecursively(N<T>* _u) noexcept;
 	int GetMax(int _x, int _y) const noexcept;
+	int GetDepthOfNode(N<T>* _u) noexcept;
+	int GetSizeOfNode(N<T>* _u) noexcept;
 
 protected:
 
@@ -91,6 +93,7 @@ protected:
 template <typename T, template<typename T> class N>
 bool BaseTree<T, N>::AddItem(T& _item)
 {
+	std::cout << "\n\t\t BaseTree Addition \n\n";
 	N<T>* p = FindLastNode(_item);
 	N<T>* u = new N<T>[1];
 	*u->Data = _item;
@@ -107,6 +110,7 @@ bool BaseTree<T, N>::AddItem(T& _item)
 template <typename T, template<typename T> class N>
 bool BaseTree<T, N>::DeleteItem(T& _item)
 {
+	std::cout << "\n\t\t BaseTree Deletion \n";
 	N<T>* temp = GetNode(_item);
 	if (temp == nullptr) return false;
 	RemoveNode(temp);
@@ -142,6 +146,11 @@ bool BaseTree<T, N>::SearchItem(T _item)
 template<typename T, template<typename T> class N>
 void BaseTree<T, N>::Print() noexcept
 {
+	if (this->mLength == 0)
+	{
+		std::cout << "\n Nothing to Print ;( \n";
+		return;
+	}
 	N<T>* u = this->root, * next, * prev = nullptr;
 	while (u != nullptr)
 	{
@@ -388,12 +397,10 @@ void BaseTree<T, N>::PrintTreeSize1() noexcept
 }
 
 template <typename T, template<typename T> class N>
-void BaseTree<T, N>::PrintTreeSize2() noexcept
+int BaseTree<T, N>::GetTreeSize() noexcept
 {
 	int size(PrintSizeOfNodeRecursively(this->root));
-	std::cout <<
-		"\t Node Size ( Recursively Calculated )  :  " << size << "\n";
-	return;
+	return size;
 }
 
 template <typename T, template<typename T> class N>
@@ -481,4 +488,30 @@ int BaseTree<T, N>::GetMax(int _x, int _y) const noexcept
 	if (_x > _y) return _x;
 	else if (_x < _y) return _y;
 	else return _x;
+}
+
+template <typename T, template <typename T> class N>
+int BaseTree<T, N>::GetDepthOfNode(N<T>* _u) noexcept
+{
+	int dep(0);
+	N<T>* ptr = _u;
+	while (ptr != this->root)
+	{
+		dep++;
+		ptr = ptr->parent;
+	}
+	return dep;
+}
+
+template <typename T, template <typename T> class N>
+int BaseTree<T, N>::GetSizeOfNode(N<T>* _u) noexcept
+{
+	if (_u == nullptr)
+	{
+		return 0;
+	}
+	else
+	{
+		return 1 + GetSizeOfNode(_u->left) + GetSizeOfNode(_u->right);
+	}
 }
