@@ -59,6 +59,11 @@ public:
 		if (this->mID == _data.mID) return true;
 		else return false;
 	}
+	bool operator!=(const SimpleData& _data)
+	{
+		if (this->mID != _data.mID) return true;
+		else return false;
+	}
 
 	friend std::ostream& operator<<(std::ostream& _os, const SimpleData& _data)
 	{

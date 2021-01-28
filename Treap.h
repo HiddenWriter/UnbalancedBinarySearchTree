@@ -35,7 +35,6 @@ void Treap<T, N>::RotationLeft(N<T>* _u)
 	}
 
 	_u->right = w->left;
-
 	if (_u->right != nullptr)
 	{
 		_u->right->parent = _u;

@@ -18,6 +18,7 @@ void App::Run()
 				"\t 1. Unbalanced Binary Search Tree \n" <<
 				"\t 2. Treap \n" <<
 				"\t 3. ScapeGoat \n"
+				"\t 4. Red-Black Tree \n"
 				"\t 0. Exit \n" <<
 				"\t-----------------------------------------------\n" <<
 				"\t : ";
@@ -37,6 +38,11 @@ void App::Run()
 			case 3:
 				vt = new ScapeGoat<SimpleData, Node>[1];
 				GetType() = TYPE::SCAPEGOAT;
+				s = true;
+				break;
+			case 4:
+				vt = new RedBlackTree<SimpleData, RBTNode>[1];
+				GetType() = TYPE::RBT;
 				s = true;
 				break;
 			case 0:
@@ -122,6 +128,10 @@ void App::Add()
 	{
 		if (static_cast<BaseTree<SimpleData, Node>*>(vt)->AddItem(sd)) sux = true;
 	}
+	else if (GetType() == TYPE::RBT)
+	{
+		if (static_cast<BaseTree<SimpleData, RBTNode>*>(vt)->AddItem(sd)) sux = true;
+	}
 
 	if (sux)
 	{
@@ -158,6 +168,10 @@ void App::Delete()
 	{
 		if (static_cast<BaseTree<SimpleData, Node>*>(vt)->DeleteItem(sd)) sux = true;
 	}
+	else if (GetType() == TYPE::RBT)
+	{
+		if (static_cast<BaseTree<SimpleData, RBTNode>*>(vt)->DeleteItem(sd)) sux = true;
+	}
 	if (sux)
 	{
 		std::cout << msg.first;
@@ -183,6 +197,10 @@ void App::Print() noexcept
 	{
 		static_cast<BaseTree<SimpleData, Node>*>(vt)->Print();
 	}
+	else if (GetType() == TYPE::RBT)
+	{
+		static_cast<BaseTree<SimpleData, RBTNode>*>(vt)->Print();
+	}
 	return;
 }
 
@@ -200,6 +218,10 @@ void App::Height() noexcept
 	{
 		static_cast<BaseTree<SimpleData, Node>*>(vt)->PrintTreeHeight();
 	}
+	else if (GetType() == TYPE::RBT)
+	{
+		static_cast<BaseTree<SimpleData, RBTNode>*>(vt)->PrintTreeHeight();
+	}
 	return;
 }
 
@@ -216,6 +238,10 @@ void App::ShowSize() noexcept
 	else if (GetType() == TYPE::SCAPEGOAT)
 	{
 		static_cast<BaseTree<SimpleData, Node>*>(vt)->PrintTreeSize1();
+	}
+	else if (GetType() == TYPE::RBT)
+	{
+		static_cast<BaseTree<SimpleData, RBTNode>*>(vt)->PrintTreeSize1();
 	}
 	return;
 }
@@ -238,6 +264,9 @@ void App::Destroy()
 		break;
 	case TYPE::SCAPEGOAT:
 		delete[] static_cast<BaseTree<SimpleData, Node>*>(vt);
+		break;
+	case TYPE::RBT:
+		delete[] static_cast<BaseTree<SimpleData, RBTNode>*>(vt);
 		break;
 	default:
 		break;

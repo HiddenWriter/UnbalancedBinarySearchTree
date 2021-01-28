@@ -3,7 +3,7 @@
 
 enum class TYPE
 {
-	UnBalBST, Treap, SCAPEGOAT, UNKNOWN
+	UnBalBST, Treap, SCAPEGOAT, RBT, UNKNOWN
 };
 
 #include <cstdlib>
@@ -15,5 +15,6 @@ enum class TYPE
 #include "BaseTree.h"
 #include "Treap.h"
 #include "ScapeGoat.h"
+#include "RedBlackTree.h"
 #include "App.h"
 #endif PCH_H

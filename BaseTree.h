@@ -17,6 +17,24 @@ public:
 	Node* parent;
 	T* Data;
 };
+#pragma once
+template <typename T>
+class RBTNode
+{
+public :
+	RBTNode()
+	{
+		left = right = parent = nullptr;
+		Data = new T[1];
+	}
+	~RBTNode()
+	{
+		delete[] Data;
+	}
+	RBTNode* left ,* right, * parent;
+	T* Data;
+	int colour;
+};
 
 #pragma once
 template <typename T>
@@ -48,7 +66,8 @@ public:
 	BaseTree()
 		: mLength(0)
 	{
-		root = nullptr;
+		nil = nullptr;
+		root = nil;
 	}
 	~BaseTree() {}
 	virtual bool AddItem(T& _item);
@@ -79,6 +98,7 @@ protected:
 
 protected:
 
+	N<T>* nil;
 	N<T>* root;
 	int mLength;
 };
@@ -112,7 +132,7 @@ bool BaseTree<T, N>::DeleteItem(T& _item)
 {
 	std::cout << "\n\t\t BaseTree Deletion \n";
 	N<T>* temp = GetNode(_item);
-	if (temp == nullptr) return false;
+	if (temp == nil) return false;
 	RemoveNode(temp);
 	return true;
 }
@@ -124,7 +144,7 @@ template <typename T, template<typename T> class N>
 bool BaseTree<T, N>::SearchItem(T _item)
 {
 	N<T>* u = this->root;
-	while (u != nullptr)
+	while (u != nil)
 	{
 		if (*u->Data < _item)
 		{
@@ -151,17 +171,17 @@ void BaseTree<T, N>::Print() noexcept
 		std::cout << "\n Nothing to Print ;( \n";
 		return;
 	}
-	N<T>* u = this->root, * next, * prev = nullptr;
-	while (u != nullptr)
+	N<T>* u = this->root, * next, * prev = nil;
+	while (u != nil)
 	{
 		if (prev == u->parent)
 		{
 			std::cout << *u->Data;
-			if (u->left != nullptr)
+			if (u->left != nil)
 			{
 				next = u->left;
 			}
-			else if (u->right != nullptr)
+			else if (u->right != nil)
 			{
 				next = u->right;
 			}
@@ -172,7 +192,7 @@ void BaseTree<T, N>::Print() noexcept
 		}
 		else if (prev == u->left)
 		{
-			if (u->right != nullptr)
+			if (u->right != nil)
 			{
 				next = u->right;
 			}
@@ -204,7 +224,7 @@ template<typename T, template<typename T> class N>
 void BaseTree<T, N>::RemoveNode(N<T>* _node)
 {
 	// First IF STATEMENT is for the node (_node) which has no more than one child node.
-	if (_node->left == nullptr || _node->right == nullptr)
+	if (_node->left == nil || _node->right == nil)
 	{
 		// In this case, we can just splice it.
 		Splice(_node);
@@ -218,7 +238,7 @@ void BaseTree<T, N>::RemoveNode(N<T>* _node)
 		// Deleting a node from the binary tree with two different children is done by replacing node with 
 		// the smallest value in the right subtree of _node.
 		N<T>* w = _node->right;
-		while (w->left != nullptr)
+		while (w->left != nil)
 		{
 			w = w->left;
 		}
@@ -232,7 +252,7 @@ template<typename T, template<typename T> class N>
 N<T>* BaseTree<T, N>::GetNode(T& _item)
 {
 	N<T>* u = this->root;
-	while (u != nullptr)
+	while (u != nil)
 	{
 		if (*u->Data < _item)
 		{
@@ -247,7 +267,7 @@ N<T>* BaseTree<T, N>::GetNode(T& _item)
 			return u;
 		}
 	}
-	return nullptr;
+	return nil;
 }
 
 // brief		Remove parameter _node from the binary tree.
@@ -258,7 +278,7 @@ void BaseTree<T, N>::Splice(N<T>* _u)
 	// First IF STATEMENT does the process to hold child of the _node( Will be deleted ) 
 	// Hold the child node with node 's'
 	N<T>* s, * p;
-	if (_u->left != nullptr)
+	if (_u->left != nil)
 	{
 		s = _u->left;
 	}
@@ -273,7 +293,7 @@ void BaseTree<T, N>::Splice(N<T>* _u)
 	if (_u == this->root)
 	{
 		this->root = s;
-		p = nullptr; //< if the _node is the root node, parent of the root is nullptr.
+		p = nil; //< if the _node is the root node, parent of the root is nil.
 	}
 	// if _node is not the root node, link the node p to the parent of the _node
 	// and then with third IF STATEMENT, link the node p to the child node s.
@@ -291,9 +311,9 @@ void BaseTree<T, N>::Splice(N<T>* _u)
 	}
 
 	// Final IF STATEMENT link the child node s to the parent node p.
-	// The reason why for checking whether the child node s is nullptr or not, 
+	// The reason why for checking whether the child node s is nil or not, 
 	// it is because it is likely that the binary tree has only one node : The Root.
-	if (s != nullptr)
+	if (s != nil)
 	{
 		s->parent = p;
 	}
@@ -303,8 +323,8 @@ void BaseTree<T, N>::Splice(N<T>* _u)
 template<typename T, template<typename T> class N>
 N<T>* BaseTree<T, N>::FindSmallest(T& _item)
 {
-	N<T>* u = this->root, * z = nullptr;
-	while (u != nullptr)
+	N<T>* u = this->root, * z = nil;
+	while (u != nil)
 	{
 		if (*u->Data > _item)
 		{
@@ -320,15 +340,15 @@ N<T>* BaseTree<T, N>::FindSmallest(T& _item)
 			return u;
 		}
 	}
-	return z == nullptr ? nullptr : z;
+	return z == nil ? nil : z;
 }
 
-// brief		Find last node of this binary tree.
+// brief		Find a last node or node which has item T
 template<typename T, template<typename T> class N>
 N<T>* BaseTree<T, N>::FindLastNode(T& _item)
 {
-	N<T>* w = this->root, * prev = nullptr;
-	while (w != nullptr)
+	N<T>* w = this->root, * prev = nil;
+	while (w != nil)
 	{
 		prev = w;
 		if (*w->Data < _item)
@@ -350,7 +370,7 @@ N<T>* BaseTree<T, N>::FindLastNode(T& _item)
 template<typename T, template<typename T> class N>
 bool BaseTree<T, N>::AddItemToChild(N<T>* _p, N<T>* _u)
 {
-	if (_p == nullptr)
+	if (_p == nil)
 	{
 		this->root = _u;
 	}
@@ -416,17 +436,17 @@ template <typename T, template<typename T> class N>
 int BaseTree<T, N>::PrintSizeOfNodeNonRecursively() noexcept
 {
 	int cnt(0);
-	N<T>* u = this->root, * next, * prev = nullptr;
-	while (u != nullptr)
+	N<T>* u = this->root, * next, * prev = nil;
+	while (u != nil)
 	{
 		if (prev == u->parent)
 		{
 			cnt++;
-			if (u->left != nullptr)
+			if (u->left != nil)
 			{
 				next = u->left;
 			}
-			else if (u->right != nullptr)
+			else if (u->right != nil)
 			{
 				next = u->right;
 			}
@@ -437,7 +457,7 @@ int BaseTree<T, N>::PrintSizeOfNodeNonRecursively() noexcept
 		}
 		else if (prev == u->left)
 		{
-			if (u->right != nullptr)
+			if (u->right != nil)
 			{
 				next = u->right;
 			}
@@ -459,7 +479,7 @@ int BaseTree<T, N>::PrintSizeOfNodeNonRecursively() noexcept
 template <typename T, template<typename T> class N>
 int BaseTree<T, N>::PrintSizeOfNodeRecursively(N<T>* _u) noexcept
 {
-	if (_u == nullptr)
+	if (_u == nil)
 	{
 		return 0;
 	}
@@ -472,7 +492,7 @@ int BaseTree<T, N>::PrintSizeOfNodeRecursively(N<T>* _u) noexcept
 template <typename T, template<typename T> class N>
 int BaseTree<T, N>::PrintHeightOfNodeRecursively(N<T>* _u) noexcept
 {
-	if (_u == nullptr)
+	if (_u == nil)
 	{
 		return -1;
 	}
@@ -506,7 +526,7 @@ int BaseTree<T, N>::GetDepthOfNode(N<T>* _u) noexcept
 template <typename T, template <typename T> class N>
 int BaseTree<T, N>::GetSizeOfNode(N<T>* _u) noexcept
 {
-	if (_u == nullptr)
+	if (_u == nil)
 	{
 		return 0;
 	}
